@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prom Timeline</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #fff8f0, #f0f8ff);
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+    thead {
+      background-color: #000;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    tr {
+      transition: background-color 0.3s ease;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tr.highlight {
+      background-color: #ffedcc !important;
+      font-weight: bold;
+      color: #000;
+    }
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        padding: 1rem;
+      }
+      td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Timeline Sự Kiện Prom</h1>
+    <table id="timeline">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Thời gian</th>
+          <th>Thời lượng</th>
+          <th>Nội dung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>17:30 - 18:00</td><td>30’</td><td>Check-in + Welcome Drink</td></tr>
+        <tr><td>2</td><td>18:30 - 18:35</td><td>5’</td><td>Ổn định, tập trung học sinh</td></tr>
+        <tr><td>3</td><td>18:35 - 18:40</td><td>5’</td><td>Tiết mục văn nghệ mở màn</td></tr>
+        <tr><td>4</td><td>18:40 - 18:45</td><td>5’</td><td>Giới thiệu chương trình</td></tr>
+        <tr><td>5</td><td>18:45 - 18:50</td><td>5’</td><td>Nghi thức khai tiệc</td></tr>
+        <tr><td>6</td><td>18:50 - 18:55</td><td>5’</td><td>Tiết mục văn nghệ dẫn nhập "Dạ Vũ Sera"</td></tr>
+        <tr><td>7</td><td>18:55 - 19:30</td><td>35’</td><td>Phần thi khiêu vũ tập thể "Dạ Vũ Sera"</td></tr>
+        <tr><td>8</td><td>19:30 - 19:45</td><td>15’</td><td>Teabreak + Violin</td></tr>
+        <tr><td>9</td><td>19:45 - 19:55</td><td>10’</td><td>Lucky Draw + Trao quà</td></tr>
+        <tr><td>10</td><td>19:55 - 20:05</td><td>10’</td><td>Khiêu vũ đơn + đồng diễn</td></tr>
+        <tr><td>11</td><td>20:05 - 20:10</td><td>5’</td><td>Bình chọn đội thi xuất sắc</td></tr>
+        <tr><td>12</td><td>20:10 - 20:20</td><td>10’</td><td>Tổng kết – Trao giải</td></tr>
+        <tr><td>13</td><td>20:20 - 20:30</td><td>10’</td><td>Khoảnh khắc “Kings & Queens”</td></tr>
+        <tr><td>14</td><td>20:30 - 21:00</td><td>30’</td><td>DJ</td></tr>
+        <tr><td>15</td><td>21:00 - 21:10</td><td>10’</td><td>Kết thúc – chụp hình</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    function getCurrentTime() {
+      const now = new Date();
+      return now.getHours() * 60 + now.getMinutes();
+    }
+
+    function parseTimeRange(range) {
+      const [start, end] = range.split(' - ');
+      const [sh, sm] = start.split(':').map(Number);
+      const [eh, em] = end.split(':').map(Number);
+      return {
+        start: sh * 60 + sm,
+        end: eh * 60 + em
+      };
+    }
+
+    function highlightCurrentRow() {
+      const rows = document.querySelectorAll('#timeline tbody tr');
+      const current = getCurrentTime();
+      rows.forEach(row => {
+        const timeText = row.children[1].textContent;
+        const { start, end } = parseTimeRange(timeText);
+        if (current >= start && current < end) {
+          row.classList.add('highlight');
+        } else {
+          row.classList.remove('highlight');
+        }
+      });
+    }
+
+    setInterval(highlightCurrentRow, 30000);
+    highlightCurrentRow();
+  </script>
+</body>
+</html>
