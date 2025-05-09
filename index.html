@@ -1,147 +1,527 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prom Timeline</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: linear-gradient(to right, #fff8f0, #f0f8ff);
-      color: #333;
-      scroll-behavior: smooth;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      overflow-x: auto;
-    }
-    th, td {
-      padding: 12px 15px;
-      text-align: center;
-    }
-    thead {
-      background-color: #000;
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    tr {
-      transition: background-color 0.3s ease;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    tr.highlight {
-      background-color: #ffedcc !important;
-      font-weight: bold;
-      color: #000;
-    }
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead tr {
-        display: none;
-      }
-      tr {
-        margin-bottom: 1rem;
-        border: 1px solid #ccc;
-        padding: 1rem;
-      }
-      td {
-        text-align: left;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 50%;
-      }
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        top: 10px;
-        font-weight: bold;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-SERÁ PROM NIGHT 2025</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #d4af37;
+            --secondary: #1a1a2e;
+            --light: #f8f8f8;
+            --dark: #16213e;
+            --accent: #c70039;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark), #0a0a18);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1200/300') center/cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #f1c40f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), transparent);
+        }
+
+        .subtitle {
+            font-weight: 300;
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), rgba(212, 175, 55, 0.2));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 40px;
+            position: relative;
+            margin-bottom: 2rem;
+            width: 50%;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: auto;
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 40px;
+            transform: translateX(50px);
+        }
+
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 20px;
+            right: -9px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            right: auto;
+            left: -11px;
+        }
+
+        .timeline-content {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            width: 100%;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -15px;
+            width: 15px;
+            height: 15px;
+            background: rgba(26, 26, 46, 0.8);
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            transform: rotate(-45deg);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: auto;
+            left: -15px;
+            transform: rotate(135deg);
+            border-right: none;
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .time {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .time-icon {
+            margin-right: 5px;
+            font-size: 1.2rem;
+        }
+
+        .timeline-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .duration {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .cta-container {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), #f1c40f);
+            color: var(--dark);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Sparkle Animation */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            opacity: 0;
+            animation: sparkle 3s infinite;
+            z-index: -1;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 40px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-right: 0;
+                padding-left: 80px;
+                justify-content: flex-start;
+            }
+
+            .timeline-item:nth-child(even) {
+                padding-left: 80px;
+            }
+
+            .timeline-dot {
+                left: 31px;
+                right: auto;
+            }
+
+            .timeline-item:nth-child(even) .timeline-dot {
+                left: 31px;
+            }
+
+            .timeline-content::before {
+                left: -15px;
+                right: auto;
+                transform: rotate(135deg);
+                border-right: none;
+                border-left: 1px solid rgba(212, 175, 55, 0.3);
+                border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            }
+
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -15px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Timeline Sự Kiện Prom</h1>
-    <table id="timeline">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Thời gian</th>
-          <th>Thời lượng</th>
-          <th>Nội dung</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>17:30 - 18:00</td><td>30’</td><td>Check-in + Welcome Drink</td></tr>
-        <tr><td>2</td><td>18:30 - 18:35</td><td>5’</td><td>Ổn định, tập trung học sinh</td></tr>
-        <tr><td>3</td><td>18:35 - 18:40</td><td>5’</td><td>Tiết mục văn nghệ mở màn</td></tr>
-        <tr><td>4</td><td>18:40 - 18:45</td><td>5’</td><td>Giới thiệu chương trình</td></tr>
-        <tr><td>5</td><td>18:45 - 18:50</td><td>5’</td><td>Nghi thức khai tiệc</td></tr>
-        <tr><td>6</td><td>18:50 - 18:55</td><td>5’</td><td>Tiết mục văn nghệ dẫn nhập "Dạ Vũ Sera"</td></tr>
-        <tr><td>7</td><td>18:55 - 19:30</td><td>35’</td><td>Phần thi khiêu vũ tập thể "Dạ Vũ Sera"</td></tr>
-        <tr><td>8</td><td>19:30 - 19:45</td><td>15’</td><td>Teabreak + Violin</td></tr>
-        <tr><td>9</td><td>19:45 - 19:55</td><td>10’</td><td>Lucky Draw + Trao quà</td></tr>
-        <tr><td>10</td><td>19:55 - 20:05</td><td>10’</td><td>Khiêu vũ đơn + đồng diễn</td></tr>
-        <tr><td>11</td><td>20:05 - 20:10</td><td>5’</td><td>Bình chọn đội thi xuất sắc</td></tr>
-        <tr><td>12</td><td>20:10 - 20:20</td><td>10’</td><td>Tổng kết – Trao giải</td></tr>
-        <tr><td>13</td><td>20:20 - 20:30</td><td>10’</td><td>Khoảnh khắc “Kings & Queens”</td></tr>
-        <tr><td>14</td><td>20:30 - 21:00</td><td>30’</td><td>DJ</td></tr>
-        <tr><td>15</td><td>21:00 - 21:10</td><td>10’</td><td>Kết thúc – chụp hình</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <script>
-    function getCurrentTime() {
-      const now = new Date();
-      return now.getHours() * 60 + now.getMinutes();
-    }
+    <div class="container">
+        <header>
+            <div class="header-bg"></div>
+            <div class="subtitle">PROM NIGHT 2025</div>
+            <h1>K-SERÁ</h1>
+            <p>An unforgettable evening of elegance and celebration</p>
+        </header>
 
-    function parseTimeRange(range) {
-      const [start, end] = range.split(' - ');
-      const [sh, sm] = start.split(':').map(Number);
-      const [eh, em] = end.split(':').map(Number);
-      return {
-        start: sh * 60 + sm,
-        end: eh * 60 + em
-      };
-    }
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:00 - 18:30</div>
+                    <div class="duration">30 minutes</div>
+                    <h3 class="timeline-title">Welcome Reception</h3>
+                    <p>Check-in & Welcome Drinks</p>
+                </div>
+            </div>
 
-    function highlightCurrentRow() {
-      const rows = document.querySelectorAll('#timeline tbody tr');
-      const current = getCurrentTime();
-      rows.forEach(row => {
-        const timeText = row.children[1].textContent;
-        const { start, end } = parseTimeRange(timeText);
-        if (current >= start && current < end) {
-          row.classList.add('highlight');
-        } else {
-          row.classList.remove('highlight');
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:30 - 18:35</div>
+                    <div class="duration">5 minutes</div>
+                    <h3 class="timeline-title">Opening Ceremony</h3>
+                    <p>Ổn định, tập trung học sinh</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:35 - 18:45</div>
+                    <div class="duration">10 minutes</div>
+                    <h3 class="timeline-title">Special Performance</h3>
+                    <p>Hoạt cảnh đôi cánh và vàng trắng (2p)</p>
+                    <p>Tiết mục nhảy mở màn Fdanx (4-5p)</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:45 - 18:50</div>
+                    <div class="duration">5 minutes</div>
+                    <h3 class="timeline-title">Program Introduction</h3>
+                    <p>Giới thiệu chương trình</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:50 - 18:55</div>
+                    <div class="duration">5 minutes</div>
+                    <h3 class="timeline-title">Opening Ceremony</h3>
+                    <p>Nghi thức khai tiệc</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 18:55 - 19:25</div>
+                    <div class="duration">30 minutes</div>
+                    <h3 class="timeline-title">Dance Competition</h3>
+                    <p>Phần thi khiêu vũ tập thể "Dạ Vũ Sera"</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 19:25 - 19:40</div>
+                    <div class="duration">15 minutes</div>
+                    <h3 class="timeline-title">Entertainment Break</h3>
+                    <p>Teabreak + Violin Performance</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 19:40 - 19:45</div>
+                    <div class="duration">5 minutes</div>
+                    <h3 class="timeline-title">Lucky Draw</h3>
+                    <p>Lucky Draw + Trao quà trên sân khấu</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 19:45 - 20:00</div>
+                    <div class="duration">15 minutes</div>
+                    <h3 class="timeline-title">Solo Dance Competition</h3>
+                    <p>Phần thi Khiêu vũ đơn</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 20:00 - 20:10</div>
+                    <div class="duration">10 minutes</div>
+                    <h3 class="timeline-title">Couple Selection</h3>
+                    <p>Bình chọn cặp đôi đã vũ yêu thích nhất + Lucky draw</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 20:10 - 20:25</div>
+                    <div class="duration">15 minutes</div>
+                    <h3 class="timeline-title">Special Dance</h3>
+                    <p>Khoảnh khắc "One Last Dance"- Khiêu vũ tự do</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 20:25 - 20:30</div>
+                    <div class="duration">5 minutes</div>
+                    <h3 class="timeline-title">Royalty Moment</h3>
+                    <p>Khoảnh khắc "Kings & Queens"</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 20:30 - 20:45</div>
+                    <div class="duration">15 minutes</div>
+                    <h3 class="timeline-title">Award Ceremony</h3>
+                    <p>Tổng kết – Trao giải</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 20:45 - 21:15</div>
+                    <div class="duration">30 minutes</div>
+                    <h3 class="timeline-title">Dance Party</h3>
+                    <p>DJ</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="time"><span class="time-icon">⏰</span> 21:15 - 21:30</div>
+                    <div class="duration">15 minutes</div>
+                    <h3 class="timeline-title">Closing Ceremony</h3>
+                    <p>Kết thúc – chụp hình</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <h2>Join Us For An Unforgettable Evening</h2>
+            <p>Don't miss the most elegant event of the year!</p>
+            <button class="cta-button">PROM NIGHT 2025</button>
+        </div>
+
+        <footer>
+            <p>PROM NIGHT 2025 | K-SERÁ</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add sparkles
+        const container = document.querySelector('.container');
+        for (let i = 0; i < 50; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.animationDelay = `${Math.random() * 5}s`;
+            container.appendChild(sparkle);
         }
-      });
-    }
 
-    setInterval(highlightCurrentRow, 30000);
-    highlightCurrentRow();
-  </script>
+        // Intersection Observer for timeline items
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+    </script>
 </body>
 </html>
